@@ -2,9 +2,8 @@ package com.anbtech.webffice.auth.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.anbtech.webffice.auth.service.WebfficeLoginService;
@@ -13,10 +12,13 @@ import com.anbtech.webffice.com.util.WebfficeNumberUtil;
 import com.anbtech.webffice.com.util.WebfficeStringUtil;
 import com.anbtech.webffice.com.vo.LoginVO;
 
-@Service("WebfficeLoginService")
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
 public class WebfficeLoginServiceImpl extends EgovAbstractServiceImpl implements WebfficeLoginService{
 
-	@Resource(name = "loginDAO")
+	@Autowired
 	private LoginDAO loginDAO;
 
 	/**
@@ -28,6 +30,7 @@ public class WebfficeLoginServiceImpl extends EgovAbstractServiceImpl implements
 	@Override
 	public LoginVO actionLogin(LoginVO vo) throws Exception {
 
+        log.info("actionLogin start !!!");
 		// 1. 입력한 비밀번호를 암호화한다.
 		String enpassword = WebfficeFileScrty.encryptPassword(vo.getPassword(), vo.getId());
 		vo.setPassword(enpassword);

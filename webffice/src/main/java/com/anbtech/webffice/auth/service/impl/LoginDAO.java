@@ -2,8 +2,7 @@ package com.anbtech.webffice.auth.service.impl;
 
 import java.util.List;
 
-import org.egovframe.rte.psl.dataaccess.EgovAbstractMapper;
-import org.springframework.stereotype.Repository;
+import org.egovframe.rte.psl.dataaccess.mapper.Mapper;
 
 import com.anbtech.webffice.com.vo.LoginVO;
 
@@ -21,56 +20,61 @@ import com.anbtech.webffice.com.vo.LoginVO;
  *
  *  </pre>
  */
-@Repository("loginDAO")
-public class LoginDAO extends EgovAbstractMapper {
+@Mapper("loginDAO")
+public interface  LoginDAO {
 
-	/**
-	 * 일반 로그인을 처리한다
-	 * @param vo LoginVO
-	 * @return LoginVO
-	 * @exception Exception
-	 */
-	public LoginVO actionLogin(LoginVO vo) throws Exception {
-		return (LoginVO) selectOne("loginDAO.actionLogin", vo);
-	}
-
-	/**
-	 * 아이디를 찾는다.
-	 * @param vo LoginVO
-	 * @return LoginVO
-	 * @exception Exception
-	 */
-	public LoginVO searchId(LoginVO vo) throws Exception {
-		return (LoginVO) selectOne("loginDAO.searchId", vo);
-	}
-
-	/**
-	 * 비밀번호를 찾는다.
-	 * @param vo LoginVO
-	 * @return LoginVO
-	 * @exception Exception
-	 */
-	public LoginVO searchPassword(LoginVO vo) throws Exception {
-		return (LoginVO) selectOne("loginDAO.searchPassword", vo);
-	}
-
-	/**
-	 * 변경된 비밀번호를 저장한다.
-	 * @param vo LoginVO
-	 * @exception Exception
-	 */
-	public void updatePassword(LoginVO vo) throws Exception {
-		update("loginDAO.updatePassword", vo);
-	}
-
-	/**
-	 * 페이지 권한.
-	 * @param user_Id LoginVO
-	 * @return 
-	 * @exception Exception
-	 */
-	public List<LoginVO> pageList(String user_Id) {
-	    return selectList("loginDAO.pageList", user_Id);
-	}
+	public LoginVO actionLogin(LoginVO vo);
+	public LoginVO searchId(LoginVO vo);
+	public LoginVO searchPassword(LoginVO vo);
+	public void updatePassword(LoginVO vo);
+	public List<LoginVO> pageList(String user_Id);
+//	/**
+//	 * 일반 로그인을 처리한다
+//	 * @param vo LoginVO
+//	 * @return LoginVO
+//	 * @exception Exception
+//	 */
+//	public LoginVO actionLogin(LoginVO vo) throws Exception {
+//		return (LoginVO) selectOne("loginDAO.actionLogin", vo);
+//	}
+//
+//	/**
+//	 * 아이디를 찾는다.
+//	 * @param vo LoginVO
+//	 * @return LoginVO
+//	 * @exception Exception
+//	 */
+//	public LoginVO searchId(LoginVO vo) throws Exception {
+//		return (LoginVO) selectOne("loginDAO.searchId", vo);
+//	}
+//
+//	/**
+//	 * 비밀번호를 찾는다.
+//	 * @param vo LoginVO
+//	 * @return LoginVO
+//	 * @exception Exception
+//	 */
+//	public LoginVO searchPassword(LoginVO vo) throws Exception {
+//		return (LoginVO) selectOne("loginDAO.searchPassword", vo);
+//	}
+//
+//	/**
+//	 * 변경된 비밀번호를 저장한다.
+//	 * @param vo LoginVO
+//	 * @exception Exception
+//	 */
+//	public void updatePassword(LoginVO vo) throws Exception {
+//		update("loginDAO.updatePassword", vo);
+//	}
+//
+//	/**
+//	 * 페이지 권한.
+//	 * @param user_Id LoginVO
+//	 * @return 
+//	 * @exception Exception
+//	 */
+//	public List<LoginVO> pageList(String user_Id) {
+//	    return selectList("loginDAO.pageList", user_Id);
+//	}
 
 }

@@ -3,17 +3,17 @@ package com.anbtech.webffice.auth.controller;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.anbtech.webffice.auth.service.WebfficeLoginService;
 import com.anbtech.webffice.com.DTO.response.BaseResponse;
@@ -24,7 +24,7 @@ import com.anbtech.webffice.com.service.ResponseService;
 import com.anbtech.webffice.com.vo.LoginVO;
 
 import jakarta.servlet.http.Cookie;
-import lombok.RequiredArgsConstructor;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -42,12 +42,11 @@ import lombok.extern.slf4j.Slf4j;
  *  </pre>
  */
 @Slf4j
-@RestController
-@RequiredArgsConstructor
+@Controller
 @RequestMapping("/api/v1")
 public class WebfficeLoginApiController {
 
-    @Autowired
+	@Resource(name = "loginService")
     WebfficeLoginService webfficeLoginService;
     
     @Autowired
