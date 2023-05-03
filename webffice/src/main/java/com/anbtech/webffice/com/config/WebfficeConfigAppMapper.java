@@ -82,7 +82,7 @@ public class WebfficeConfigAppMapper {
 	}
 
 	@Bean
-	public SqlSessionTemplate egovSqlSessionTemplate(@Qualifier("sqlSession") SqlSessionFactory sqlSession) {
+	public SqlSessionTemplate webfficeSqlSessionTemplate(@Qualifier("sqlSession") SqlSessionFactory sqlSession) {
 		SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(sqlSession);
 		return sqlSessionTemplate;
 	}

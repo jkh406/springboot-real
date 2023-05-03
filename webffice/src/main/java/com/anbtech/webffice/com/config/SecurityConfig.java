@@ -2,7 +2,6 @@ package com.anbtech.webffice.com.config;
 
 import java.util.Arrays;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,19 +10,13 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.anbtech.webffice.com.filter.CorsFilter;
 import com.anbtech.webffice.com.jwt.JwtAccessDeniedHandler;
 import com.anbtech.webffice.com.jwt.JwtAuthenticationEntryPoint;
-import com.anbtech.webffice.com.jwt.JwtSecurityConfig;
-import com.anbtech.webffice.com.jwt.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,21 +25,12 @@ import lombok.RequiredArgsConstructor;
 @EnableAutoConfiguration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtTokenProvider jwttokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;    
-
-    @Autowired
-    UserDetailsService userDetailsService;
 	
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
     
     @Bean

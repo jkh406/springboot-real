@@ -46,15 +46,6 @@ public class WebfficeWebApplicationInitializer implements WebApplicationInitiali
         characterEncoding.setInitParameter("encoding", "UTF-8");
         characterEncoding.setInitParameter("forceEncoding", "true");
         characterEncoding.addMappingForUrlPatterns(null, false, "*.do");
-        
-        //-------------------------------------------------------------
-        // Tomcat의 경우 allowCasualMultipartParsing="true" 추가
-        // <Context docBase="" path="/" reloadable="true" allowCasualMultipartParsing="true">
-        //-------------------------------------------------------------
-        MultipartFilter springMultipartFilter = new MultipartFilter();
-        springMultipartFilter.setMultipartResolverBeanName("multipartResolver");
-        FilterRegistration.Dynamic multipartFilter = servletContext.addFilter("springMultipartFilter", springMultipartFilter);
-        multipartFilter.addMappingForUrlPatterns(null, false, "*.do");
 
 		// -------------------------------------------------------------
 		// Spring Root Context 설정
@@ -62,14 +53,9 @@ public class WebfficeWebApplicationInitializer implements WebApplicationInitiali
 		addRootContext(servletContext);
 
 		// -------------------------------------------------------------
-		// 필터설정
+		// Webffice Web ServletContextListener 설정 - System property setting
 		// -------------------------------------------------------------
-		addFilters(servletContext);
-		
-		//-------------------------------------------------------------
-		// Spring RequestContextListener 설정
-		//-------------------------------------------------------------
-		servletContext.addListener(new org.springframework.web.context.request.RequestContextListener());
+		servletContext.addListener(new com.anbtech.webffice.com.config.WebfficeWebServletContextListener());
 
 		log.info("WebfficeWebApplicationInitializer END-============================================");
 	}
@@ -83,26 +69,6 @@ public class WebfficeWebApplicationInitializer implements WebApplicationInitiali
 		rootContext.register(WebfficeConfigApp.class);
 
 		servletContext.addListener(new ContextLoaderListener(rootContext));
-	}
-
-	/**
-	 * @param servletContext
-	 * 필터들을 등록 한다.
-	 */
-	private void addFilters(ServletContext servletContext) {
-		addEncodingFilter(servletContext);
-	}
-
-	/**
-	 * @param servletContext
-	 * Spring CharacterEncodingFilter 설정
-	 */
-	private void addEncodingFilter(ServletContext servletContext) {
-		FilterRegistration.Dynamic characterEncoding = servletContext.addFilter("encodingFilter",
-			new org.springframework.web.filter.CharacterEncodingFilter());
-		characterEncoding.setInitParameter("encoding", "UTF-8");
-		characterEncoding.setInitParameter("forceEncoding", "true");
-		characterEncoding.addMappingForUrlPatterns(null, false, "*.do");
 	}
 
 }

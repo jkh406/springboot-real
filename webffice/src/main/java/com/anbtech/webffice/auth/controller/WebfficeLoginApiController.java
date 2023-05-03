@@ -3,27 +3,24 @@ package com.anbtech.webffice.auth.controller;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbtech.webffice.auth.service.WebfficeLoginService;
 import com.anbtech.webffice.com.DTO.response.BaseResponse;
 import com.anbtech.webffice.com.DTO.response.MapDataResponse;
-import com.anbtech.webffice.com.DTO.response.SingleDataResponse;
-import com.anbtech.webffice.com.exception.DuplicatedUsernameException;
 import com.anbtech.webffice.com.exception.LoginFailedException;
-import com.anbtech.webffice.com.exception.UserNotFoundException;
+import com.anbtech.webffice.com.jwt.WebfficeJwtTokenUtil;
 import com.anbtech.webffice.com.service.ResponseService;
-import com.anbtech.webffice.com.vo.DefaultVO;
 import com.anbtech.webffice.com.vo.LoginVO;
 
 import jakarta.servlet.http.Cookie;
@@ -52,23 +49,33 @@ public class WebfficeLoginApiController {
 
     @Autowired
     WebfficeLoginService webfficeLoginService;
+    
     @Autowired
     ResponseService responseService;
 
+	/** JWT */
+	@Autowired
+    private WebfficeJwtTokenUtil jwtTokenUtil;
+	
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginVO loginVO) throws Exception {
+    public ResponseEntity<?> login(@RequestBody LoginVO loginVO, HttpServletRequest request) throws Exception {
         log.info("login start !!!");
         try {
     		LoginVO loginResultVO = webfficeLoginService.actionLogin(loginVO);
-            
-            DefaultVO token = webfficeLoginService.tokenGenerator(loginVO.getId());
+
+			String jwtToken = jwtTokenUtil.generateToken(loginVO);
+			
+			String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+			
+	    	request.getSession().setAttribute("LoginVO", loginResultVO);
+			
             Map<String, Object> userDataMap = loginResultVO.getUserDataMap();
             
             Map<String, Object> data = new LinkedHashMap<>();
-            data.put("Token", token.getAccessToken());
+            data.put("Token", jwtToken);
             data.put("User", userDataMap);
             
-            ResponseCookie responseCookie = ResponseCookie.from(HttpHeaders.SET_COOKIE, token.getRefreshToken())
+            ResponseCookie responseCookie = ResponseCookie.from(HttpHeaders.SET_COOKIE, jwtToken)
                     .path("/")
                     .maxAge(14 * 24 * 60 * 60) // 14일
                     .httpOnly(true)

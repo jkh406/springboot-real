@@ -1,13 +1,11 @@
 package com.anbtech.webffice.auth.service.impl;
 
-
-import com.anbtech.webffice.com.vo.LoginVO;
-
 import java.util.List;
 
 import org.egovframe.rte.psl.dataaccess.EgovAbstractMapper;
-
 import org.springframework.stereotype.Repository;
+
+import com.anbtech.webffice.com.vo.LoginVO;
 
 /**
  * 일반 로그인을 처리하는 비즈니스 구현 클래스
@@ -71,13 +69,8 @@ public class LoginDAO extends EgovAbstractMapper {
 	 * @return 
 	 * @exception Exception
 	 */
-	@SuppressWarnings("unchecked")
-	public List<LoginVO> pageList(String user_Id) throws Exception {
-		return (List<LoginVO>) selectOne("loginDAO.pageList", user_Id);
-	}
-
-	public LoginVO findUser(String user_Id) {
-		return (LoginVO) selectOne("loginDAO.findUser", user_Id);
+	public List<LoginVO> pageList(String user_Id) {
+	    return selectList("loginDAO.pageList", user_Id);
 	}
 
 }

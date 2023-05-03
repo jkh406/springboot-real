@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="loginDAO">
 
+<mapper namespace="loginDAO">
 
 	<!-- 로그인 처리를 위한 resultMap -->
 	<resultMap id="login" type="com.anbtech.webffice.com.vo.LoginVO">
@@ -29,7 +29,7 @@
 	</resultMap>
 	-->
 	<!-- 일반 로그인 -->
-	<select id="actionLogin" resultMap="login">
+	<select id="loginDAO.actionLogin" resultMap="login">
 		SELECT EMP.EMP_NO AS id
 		     , EMP.EMP_NM AS name
 		     , EMP.PW_VAL AS password
@@ -67,15 +67,13 @@
 <!-- 		</if> -->
 
 	</select>
-    <select id="findUser" parameterType="com.anbtech.webffice.domain.user.UserVo"
-     resultType="com.anbtech.webffice.domain.user.dto.UserDTO">
-      SELECT user_id, user_PW, user_role as user_se, create_date, update_date, name
+    <select id="loginDAO.findUser" resultMap="find">
+      SELECT user_id as id, user_PW as password, user_role as user_se, create_date, update_date, name
       FROM sys.user_TB
       WHERE user_ID = #{user_Id}
     </select>
     
-    <select id="pageList" parameterType="com.anbtech.webffice.domain.user.UserVo"
-     resultType="com.anbtech.webffice.domain.user.dto.UserDTO">
+    <select id="loginDAO.pageList" resultMap="page">
 	select a.user_ID as ID, b.authority as authority, d.page_url as page_url 
 	  from sys.user_tb a
 	  join sys.authorities b

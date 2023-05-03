@@ -2,7 +2,6 @@ package com.anbtech.webffice.auth.service;
 
 import java.util.List;
 
-import com.anbtech.webffice.com.vo.DefaultVO;
 import com.anbtech.webffice.com.vo.LoginVO;
 
 public interface  WebfficeLoginService {
@@ -41,14 +40,5 @@ public interface  WebfficeLoginService {
 	 * @param vo    LoginVO
 	 * @exception Exception Exception
 	 */
-	public List<LoginVO> pageList(String id) throws Exception;
-	
-	/**
-	 * token 생성.
-	 * @return DefaultVO
-	 *
-	 * @param vo    DefaultVO
-	 * @exception Exception Exception
-	 */
-	public DefaultVO tokenGenerator(String id) throws Exception;
+	public List<LoginVO> pageList(String id);
 }

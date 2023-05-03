@@ -3,7 +3,6 @@ package com.anbtech.webffice.com.vo;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * @Class Name : LoginVO.java
@@ -29,8 +26,6 @@ import lombok.Setter;
  *  @see
  *  
  */
-@Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

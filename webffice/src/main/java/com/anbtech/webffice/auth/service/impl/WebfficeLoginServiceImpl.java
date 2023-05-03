@@ -1,37 +1,20 @@
 package com.anbtech.webffice.auth.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.anbtech.webffice.auth.service.WebfficeLoginService;
-import com.anbtech.webffice.com.jwt.JwtTokenProvider;
 import com.anbtech.webffice.com.util.WebfficeFileScrty;
 import com.anbtech.webffice.com.util.WebfficeNumberUtil;
 import com.anbtech.webffice.com.util.WebfficeStringUtil;
-import com.anbtech.webffice.com.vo.DefaultVO;
 import com.anbtech.webffice.com.vo.LoginVO;
 
-import lombok.RequiredArgsConstructor;
-
 @Service("WebfficeLoginService")
-@RequiredArgsConstructor
 public class WebfficeLoginServiceImpl extends EgovAbstractServiceImpl implements WebfficeLoginService{
-    // 암호화 위한 엔코더
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final JwtTokenProvider jwtTokenProvider;
-
-    // 회원가입 시 저장시간을 넣어줄 DateTime형
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:sss");
-    Date time = new Date();
-    String localTime = format.format(time);
 
 	@Resource(name = "loginDAO")
 	private LoginDAO loginDAO;
@@ -130,23 +113,12 @@ public class WebfficeLoginServiceImpl extends EgovAbstractServiceImpl implements
     /**
      * 권한이 있는 page가져오는 함수 
      */
-    public List<LoginVO> pageList(String user_Id) throws Exception {
+	@Override
+    public List<LoginVO> pageList(String user_Id) {
 
         List<LoginVO> loginVO = loginDAO.pageList(user_Id);
         
         return  loginVO;
-    }
-    
-    /**
-     * Token 생성
-     */
-    public DefaultVO tokenGenerator(String user_Id) throws Exception {
-    	LoginVO loginVO = loginDAO.findUser(user_Id);
-
-        return DefaultVO.builder()
-        .accessToken("Bearer" + jwtTokenProvider.createAcessToken(loginVO.getId(), Collections.singletonList(loginVO.getUserSe())))
-        .refreshToken("Bearer" + jwtTokenProvider.createRefreshToken(loginVO.getId(), Collections.singletonList(loginVO.getUserSe())))
-        .build();
     }
 }
 
