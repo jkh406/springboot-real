@@ -13,8 +13,7 @@
 	<!-- Type Aliases 설정-->
 	<typeAliases>
 		<typeAlias alias="FileVO"			type="com.anbtech.webffice.com.vo.FileVO" />
-		<typeAlias alias="ComDefaultCodeVO" type="com.anbtech.webffice.com.vo.ComDefaultCodeVO" />
-		<typeAlias alias="comDefaultVO"		type="com.anbtech.webffice.com.vo.ComDefaultVO" />
+		<typeAlias alias="DefaultVO"		type="com.anbtech.webffice.com.vo.DefaultVO" />
 	</typeAliases>
     
 </configuration>

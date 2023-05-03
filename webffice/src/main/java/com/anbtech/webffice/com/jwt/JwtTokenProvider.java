@@ -29,7 +29,6 @@ public class JwtTokenProvider implements InitializingBean{
 
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-    private static final String AUTHORITIES_KEY = "auth";
     private final long accessTokenValidityInMilliseconds = 30 * 60 * 1000L; //30분
     private final long refreshTokenValidityInMilliseconds = 7 * 24 * 60 * 60 * 1000L; //7일
     private final String secret;

@@ -2,7 +2,8 @@ package com.anbtech.webffice.com.service;
 
 import java.util.List;
 
-public interface WebfficeUserDetailsService {
+public interface WebfficeUserDetailsService  {
+
 
 	/**
 	 * 인증된 사용자객체를 VO형식으로 가져온다.
@@ -21,5 +22,6 @@ public interface WebfficeUserDetailsService {
 	 * @return Boolean - 인증된 사용자 여부(TRUE / FALSE)	
 	 */
 	public Boolean isAuthenticated(); 
+
 
 }

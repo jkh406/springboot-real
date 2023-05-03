@@ -1,12 +1,20 @@
 package com.anbtech.webffice.com.vo;
 
-import java.io.Serializable;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @Class Name : LoginVO.java
@@ -21,8 +29,12 @@ import lombok.NoArgsConstructor;
  *  @see
  *  
  */
+@Getter
+@Setter
 @Builder
-public class LoginVO implements Serializable{
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoginVO implements UserDetails{
 	
 	/** 아이디 */
 	private String id;
@@ -239,5 +251,39 @@ public class LoginVO implements Serializable{
 	public void setUpdate_Date(String update_Date) {
 		this.update_Date = update_Date;
 	}
+	
+    @Override
+    public String getUsername() {
+        return this.name;
+    }
+	
+	// 이하 코드는 security 를 위한 용도
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public Collection<? extends GrantedAuthority> authorities;
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
+
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public boolean isEnabled() {
+        return true;
+    }
 	
 }

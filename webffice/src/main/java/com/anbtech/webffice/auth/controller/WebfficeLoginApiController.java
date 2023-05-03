@@ -55,34 +55,14 @@ public class WebfficeLoginApiController {
     @Autowired
     ResponseService responseService;
 
-    @PostMapping("/join")
-    public ResponseEntity<?> join(@RequestBody LoginVO loginVO) {
-        try {
-        	webfficeLoginService.join(loginVO);
-            DefaultVO token = webfficeLoginService.tokenGenerator(loginVO.getId());
-            ResponseCookie responseCookie = ResponseCookie.from(HttpHeaders.SET_COOKIE, token.getRefreshToken())
-                    .path("/")
-                    .maxAge(14 * 24 * 60 * 60) // 14일
-                    .httpOnly(true)
-                    .build();
-            SingleDataResponse<String> response = responseService.getSingleDataResponse(true, loginVO.getId(),
-                    token.getAccessToken());
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                    .body(response);
-        } catch (DuplicatedUsernameException e) {
-            BaseResponse response = responseService.getBaseResponse(false, e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginVO loginVO) {
+    public ResponseEntity<?> login(@RequestBody LoginVO loginVO) throws Exception {
         log.info("login start !!!");
         try {
-            LoginVO loginVOData = webfficeLoginService.login(loginVO);
+    		LoginVO loginResultVO = webfficeLoginService.actionLogin(loginVO);
+            
             DefaultVO token = webfficeLoginService.tokenGenerator(loginVO.getId());
-            Map<String, Object> userDataMap = loginVOData.getUserDataMap();
+            Map<String, Object> userDataMap = loginResultVO.getUserDataMap();
             
             Map<String, Object> data = new LinkedHashMap<>();
             data.put("Token", token.getAccessToken());
@@ -128,22 +108,45 @@ public class WebfficeLoginApiController {
     }
     
 
-    /**
-     * @param idDTO userId 전송을 위한 DTO
-     * @return userId가 있다면 success값을 true, 없다면 false를 리턴.
-     */
-    @GetMapping("/users/{user_Id}")
-    public ResponseEntity<BaseResponse> isHaveUser(@RequestParam String user_Id) {
-        try {
-            boolean isHaveUser = webfficeLoginService.haveUser(user_Id);
-            String message = isHaveUser ? "회원가입된 유저입니다." : "회원가입 안된 유저입니다.";
-            SingleDataResponse<Boolean> response = responseService.getSingleDataResponse(true, message, isHaveUser);
-            return ResponseEntity.ok(response);
+//    @PostMapping("/join")
+//    public ResponseEntity<?> join(@RequestBody LoginVO loginVO) {
+//        try {
+//        	webfficeLoginService.join(loginVO);
+//            DefaultVO token = webfficeLoginService.tokenGenerator(loginVO.getId());
+//            ResponseCookie responseCookie = ResponseCookie.from(HttpHeaders.SET_COOKIE, token.getRefreshToken())
+//                    .path("/")
+//                    .maxAge(14 * 24 * 60 * 60) // 14일
+//                    .httpOnly(true)
+//                    .build();
+//            SingleDataResponse<String> response = responseService.getSingleDataResponse(true, loginVO.getId(),
+//                    token.getAccessToken());
+//            return ResponseEntity.ok()
+//                    .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+//                    .body(response);
+//        } catch (DuplicatedUsernameException e) {
+//            BaseResponse response = responseService.getBaseResponse(false, e.getMessage());
+//            return ResponseEntity.badRequest().body(response);
+//        }
+//    }
 
-        } catch (UserNotFoundException exception) {
-            log.debug(exception.getMessage());
-            BaseResponse response = responseService.getBaseResponse(false, exception.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
+    
+
+//    /**
+//     * @param idDTO userId 전송을 위한 DTO
+//     * @return userId가 있다면 success값을 true, 없다면 false를 리턴.
+//     */
+//    @GetMapping("/users/{user_Id}")
+//    public ResponseEntity<BaseResponse> isHaveUser(@RequestParam String user_Id) {
+//        try {
+//            boolean isHaveUser = webfficeLoginService.haveUser(user_Id);
+//            String message = isHaveUser ? "회원가입된 유저입니다." : "회원가입 안된 유저입니다.";
+//            SingleDataResponse<Boolean> response = responseService.getSingleDataResponse(true, message, isHaveUser);
+//            return ResponseEntity.ok(response);
+//
+//        } catch (UserNotFoundException exception) {
+//            log.debug(exception.getMessage());
+//            BaseResponse response = responseService.getBaseResponse(false, exception.getMessage());
+//            return ResponseEntity.badRequest().body(response);
+//        }
+//    }
 }
