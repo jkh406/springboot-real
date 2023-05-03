@@ -2,8 +2,9 @@ package com.anbtech.webffice.auth.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.anbtech.webffice.auth.service.WebfficeLoginService;
@@ -18,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class WebfficeLoginServiceImpl extends EgovAbstractServiceImpl implements WebfficeLoginService{
 
-	@Autowired
+	@Resource(name = "loginDAO")
 	private LoginDAO loginDAO;
 
 	/**

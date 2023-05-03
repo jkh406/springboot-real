@@ -46,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1")
 public class WebfficeLoginApiController {
 
-	@Resource(name = "loginService")
+	@Autowired
     WebfficeLoginService webfficeLoginService;
     
     @Autowired
